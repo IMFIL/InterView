@@ -75,12 +75,13 @@ public class QuestionPostAdapter extends ArrayAdapter<String> {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         final View rowView=inflater.inflate(R.layout.single_question_list_element, null, true);
-        rowView.setTag(new Integer(position));
+        rowView.setTag(position);
 
         TextView questionId = (TextView) rowView.findViewById(R.id.questionIdText);
         questionId.setText("Question " + String.valueOf(position + 1));
         questionId.setTypeface(sanFranMedium);
         questionId.setTextColor(Color.parseColor("#33AAFF"));
+
 
         TextView questionText = (TextView) rowView.findViewById(R.id.questionPreviewText);
         questionText.setText(questionPreviews[position]);

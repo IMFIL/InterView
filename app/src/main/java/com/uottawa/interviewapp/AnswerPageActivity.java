@@ -3,6 +3,10 @@ package com.uottawa.interviewapp;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -88,6 +92,18 @@ public class AnswerPageActivity extends AppCompatActivity {
         answerPager = (ViewPager) findViewById(R.id.answersPopUp);
         answerPager.setAdapter(answerAdapter);
 
+
+        if(answers.length < 1){
+            answerPager = (ViewPager) findViewById(R.id.answersPopUp);
+            answerPager.setAdapter(new emptyAdapter(getSupportFragmentManager()));
+
+        }
+
+        else{
+            answerPager = (ViewPager) findViewById(R.id.answersPopUp);
+            answerPager.setAdapter(answerAdapter);
+        }
+
         numberOfAnswers = answerAdapter.getCount();
 
         nextAnswer = (TextView) findViewById(R.id.swipeForNextAnswer);
@@ -166,5 +182,26 @@ public class AnswerPageActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private class emptyAdapter extends FragmentStatePagerAdapter {
+
+        public emptyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment frag = new emptyFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("String","No Answers");
+            frag.setArguments(bundle);
+            return frag;
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
     }
 }

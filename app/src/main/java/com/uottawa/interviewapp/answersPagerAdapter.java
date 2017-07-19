@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Created by filipslatinac on 2017-06-27.
  */
 
-public class answersPagerAdapter extends FragmentPagerAdapter {
+public class answersPagerAdapter extends FragmentStatePagerAdapter {
 
     private String [] answers;
 
@@ -35,6 +36,11 @@ public class answersPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return answers.length;
     }
+
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
 
 
 }

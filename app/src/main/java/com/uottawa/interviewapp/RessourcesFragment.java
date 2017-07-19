@@ -435,7 +435,11 @@ class RessourcesFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new emptyResourceFragment();
+            Fragment frag = new emptyFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("String","Resource Not Available");
+            frag.setArguments(bundle);
+            return frag;
         }
 
         @Override

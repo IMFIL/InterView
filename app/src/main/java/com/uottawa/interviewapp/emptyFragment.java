@@ -13,7 +13,7 @@ import android.widget.TextView;
  * Created by filipslatinac on 2017-07-18.
  */
 
-class emptyResourceFragment extends Fragment {
+class emptyFragment extends Fragment {
     View rootView;
     ViewGroup container;
     LayoutInflater inflater;
@@ -34,6 +34,7 @@ class emptyResourceFragment extends Fragment {
 
         nothingHereText = (TextView) rootView.findViewById(R.id.noSuchResource);
         nothingHereText.setTypeface(fontAwesome);
+        nothingHereText.setText(getArguments().getString("String"));
 
         return rootView;
 

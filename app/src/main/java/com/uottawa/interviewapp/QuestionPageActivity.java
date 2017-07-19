@@ -90,8 +90,6 @@ public class QuestionPageActivity extends AppCompatActivity {
     String tag4;
 
 
-    QuestionPost [] questionsPosts;
-
     String sc;
 
     HashMap<String,LearningResources []> ressourcesMap = new HashMap<String,LearningResources []>();
@@ -118,13 +116,13 @@ public class QuestionPageActivity extends AppCompatActivity {
         currentSelectionView = (ViewPager) findViewById(R.id.questionsAvailablePager);
         ressourcesMap = (HashMap<String,LearningResources []>) packageReceived.getSerializable("Resources");
         currentSelectionView.setAdapter(new currentSelectionAdapter(getSupportFragmentManager(),getApplicationContext()
-                ,ressourcesMap));
-
-        updateContent(questionPosts,companyName);
-
+                ,ressourcesMap,questionPosts));
 
         tabs = (TabLayout) findViewById(R.id.tabLayoutViews);
         tabs.setupWithViewPager(currentSelectionView);
+
+        updateContent(questionPosts,companyName);
+
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -166,7 +164,8 @@ public class QuestionPageActivity extends AppCompatActivity {
 
                                     try {
                                         questionResults = new JSONObject(response);
-                                        assignAdapterForLearningResources(questionResults);
+                                        questionPosts = getQuestionPosts(questionResults,sc);
+                                        assignAdapterForLearningResources(questionPosts);
 
                                     }
                                     catch (JSONException e) {
@@ -269,9 +268,8 @@ public class QuestionPageActivity extends AppCompatActivity {
         }
 
         companyLabel.setText(companyName.substring(0,1).toUpperCase() + companyName.substring(1));
-        currentSelectionView.destroyDrawingCache();
         currentSelectionView.getAdapter().notifyDataSetChanged();
-        currentSelectionView.setAdapter(new currentSelectionAdapter(getSupportFragmentManager(),getApplicationContext(),ressourcesMap));
+        currentSelectionView.setAdapter(new currentSelectionAdapter(getSupportFragmentManager(),getApplicationContext(),ressourcesMap,questionPosts));
     }
 
     private PopupWindow spinnerLauch(){
@@ -310,10 +308,12 @@ public class QuestionPageActivity extends AppCompatActivity {
 
     private class currentSelectionAdapter extends FragmentStatePagerAdapter {
         HashMap<String,LearningResources[]> map;
+        QuestionPost [] postsAvailable;
 
-        public currentSelectionAdapter(FragmentManager supportFragmentManager, Context applicationContext,HashMap<String,LearningResources[]> map) {
+        public currentSelectionAdapter(FragmentManager supportFragmentManager, Context applicationContext,HashMap<String,LearningResources[]> map,QuestionPost [] postsAvailable) {
             super(supportFragmentManager);
             this.map = map;
+            this.postsAvailable = postsAvailable;
         }
 
         @Override
@@ -323,7 +323,7 @@ public class QuestionPageActivity extends AppCompatActivity {
                     QuestionsFragment fragment = new QuestionsFragment();
                     Bundle bundle = new Bundle();
                     bundle.putStringArray("Questions",questions);
-                    bundle.putSerializable("QuestionPosts",questionPosts);
+                    bundle.putSerializable("QuestionPosts",postsAvailable);
                     fragment.setArguments(bundle);
                     return fragment;
                 case 1:
@@ -338,7 +338,7 @@ public class QuestionPageActivity extends AppCompatActivity {
                     QuestionsFragment fragmentDefault = new QuestionsFragment();
                     Bundle bundleDefault = new Bundle();
                     bundleDefault.putStringArray("Questions",questions);
-                    bundleDefault.putSerializable("QuestionPosts",questionPosts);
+                    bundleDefault.putSerializable("QuestionPosts",postsAvailable);
                     fragmentDefault.setArguments(bundleDefault);
                     return fragmentDefault;
             }
@@ -365,7 +365,7 @@ public class QuestionPageActivity extends AppCompatActivity {
         }
     }
 
-    private void assignAdapterForLearningResources(JSONObject response){
+    private void assignAdapterForLearningResources(final QuestionPost [] qp){
 
         final HashMap<String,LearningResources []> content = new HashMap<String,LearningResources []>();
 
@@ -373,7 +373,6 @@ public class QuestionPageActivity extends AppCompatActivity {
         final ArrayList<LearningResources> booksReceived = new ArrayList<LearningResources>();
         final ArrayList<LearningResources> coursesReceived = new ArrayList<LearningResources>();
 
-        questionsPosts = getQuestionPosts(questionResults,sc);
 
 
         tag1 = tagArray[0];
@@ -426,7 +425,7 @@ public class QuestionPageActivity extends AppCompatActivity {
 
                             content.put("courses", coursesReceived.toArray(new LearningResources[coursesReceived.size()]));
                             ressourcesMap = content;
-                            updateContent(questionsPosts,sc);
+                            updateContent(qp,sc);
                             new RetrieveFeedTask().execute("https://logo.clearbit.com/"+sc.toLowerCase()+".com");
                             pw.dismiss();
 

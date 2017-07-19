@@ -125,37 +125,46 @@ xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:orientation="vertical">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/answersPopUp"
-                    android:layout_width="match_parent"
-                    android:layout_height="190dp">
-
-                </android.support.v4.view.ViewPager>
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/controlBarSwipingAnswers"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="left|center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/swipeForPreviousAnswer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="left" />
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/answersPopUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_weight="1">
+
+                </android.support.v4.view.ViewPager>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="right|center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/swipeForNextAnswer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right" />
-
+                        android:gravity="center" />
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 
