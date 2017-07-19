@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Wing</string>
+    <string name="search_bar_hint"><font size="20">ie. Amazon</font></string>
+    <string name="under_search_bar_company_text"><font size="17">Company Name</font></string>
+</resources>
